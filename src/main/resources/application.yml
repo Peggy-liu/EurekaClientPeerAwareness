@@ -1,0 +1,43 @@
+tpd: 
+  appconfig: 
+    spanish-alias: tpd-es
+    english-alias: tpd-en
+    spanish-port: 8081
+    english-port: 8082
+    peer1-address: peer1:8761
+    peer2-address: peer2:8762
+    
+eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 10
+    
+---
+spring:
+  profiles: english
+  application:
+    name: ${tpd.appconfig.english-alias}
+    
+server:
+  port: ${tpd.appconfig.english-port}
+  
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${tpd.appconfig.peer1-address}/eureka/
+      
+---
+spring:
+  profiles: spanish
+  application:
+    name: ${tpd.appconfig.spanish-alias}
+    
+server:
+  port: ${tpd.appconfig.spanish-port}
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${tpd.appconfig.peer2-address}/eureka/
+  
+
+  
+      
