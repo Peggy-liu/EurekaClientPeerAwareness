@@ -24,6 +24,8 @@ public class HelloController {
 	@Value("${tpd.appconfig.spanish-alias}")
 	private String spanish_alias;
 	
+	
+	
 	@GetMapping("/hello-server")
 	public String helloServer() {
 		return "Hello from the English client!";

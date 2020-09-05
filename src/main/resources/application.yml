@@ -7,9 +7,6 @@ tpd:
     peer1-address: peer1:8761
     peer2-address: peer2:8762
     
-eureka:
-  instance:
-    lease-renewal-interval-in-seconds: 10
     
 ---
 spring:
@@ -23,8 +20,9 @@ server:
 eureka:
   client:
     service-url:
-      defaultZone: http://${tpd.appconfig.peer1-address}/eureka/
-      
+      defaultZone: http://${tpd.appconfig.peer1-address}/eureka/,http://${tpd.appconfig.peer2-address}/eureka/
+
+
 ---
 spring:
   profiles: spanish
@@ -36,7 +34,7 @@ server:
 eureka:
   client:
     service-url:
-      defaultZone: http://${tpd.appconfig.peer2-address}/eureka/
+      defaultZone: http://${tpd.appconfig.peer2-address}/eureka/,http://${tpd.appconfig.peer1-address}/eureka/
   
 
   
