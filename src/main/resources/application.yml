@@ -7,7 +7,15 @@ tpd:
     peer1-address: peer1:8761
     peer2-address: peer2:8762
     
-    
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      enabled: true
+       
 ---
 spring:
   profiles: english

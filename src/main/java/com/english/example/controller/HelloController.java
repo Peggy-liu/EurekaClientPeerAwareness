@@ -1,5 +1,7 @@
 package com.english.example.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
@@ -15,6 +17,7 @@ import com.netflix.discovery.EurekaClient;
 @Profile("english")
 public class HelloController {
 	
+	private static Logger log = LoggerFactory.getLogger(HelloController.class);
 	@Autowired
 	private RestTemplate restTemplate;
 	
@@ -25,6 +28,11 @@ public class HelloController {
 	private String spanish_alias;
 	
 	
+	@GetMapping("/")
+	public String home() {
+		log.info("Access2 /");
+		return "hi";
+	}
 	
 	@GetMapping("/hello-server")
 	public String helloServer() {
@@ -36,7 +44,7 @@ public class HelloController {
 		final InstanceInfo instance = discoveryClient.getNextServerFromEureka(spanish_alias, false);
 		String url = instance.getHomePageUrl();
 		String response = restTemplate.getForObject(url+"/halo-server", String.class);
-		return helloServer() + " My spanish peer said :" + response;
+		return helloServer() + " My spanish peer said :" + response +instance.getPort();
 	}
 	
 	
