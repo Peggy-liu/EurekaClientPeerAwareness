@@ -15,12 +15,16 @@ management:
   endpoint:
     health:
       enabled: true
-       
+
 ---
 spring:
   profiles: english
   application:
     name: ${tpd.appconfig.english-alias}
+  sleuth:
+    sampler:
+      rate: 100
+
     
 server:
   port: ${tpd.appconfig.english-port}
@@ -30,13 +34,19 @@ eureka:
     service-url:
       defaultZone: http://${tpd.appconfig.peer1-address}/eureka/,http://${tpd.appconfig.peer2-address}/eureka/
 
-
+demo-tpd-es: 
+  ribbon: 
+    DeploymentContextBasedVipAddresses: ${tpd.appconfig.spanish-alias}
+    NIWSServerListClassName: com.netflix.niws.loadbalancer.DiscoveryEnabledNIWSServerList
+    
 ---
 spring:
   profiles: spanish
   application:
     name: ${tpd.appconfig.spanish-alias}
-    
+  sleuth:
+    sampler:
+      rate: 100
 server:
   port: ${tpd.appconfig.spanish-port}
 eureka:
@@ -44,6 +54,9 @@ eureka:
     service-url:
       defaultZone: http://${tpd.appconfig.peer2-address}/eureka/,http://${tpd.appconfig.peer1-address}/eureka/
   
-
+demo-tpd-en: 
+  ribbon: 
+    DeploymentContextBasedVipAddresses: ${tpd.appconfig.english-alias}
+    NIWSServerListClassName: com.netflix.niws.loadbalancer.DiscoveryEnabledNIWSServerList
   
       
