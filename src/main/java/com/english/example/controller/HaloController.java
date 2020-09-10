@@ -1,14 +1,13 @@
 package com.english.example.controller;
 
-import javax.annotation.PostConstruct;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.cloud.netflix.ribbon.RibbonClient;
+import org.springframework.cloud.netflix.ribbon.RibbonLoadBalancerClient;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +16,12 @@ import org.springframework.web.client.RestTemplate;
 
 import com.english.example.config.EnglishClientConfig;
 
+/**
+ * This controller class uses "Rest Template + @LoadBalanced" for implementation of
+ * client side load balancing
+ * @author liupeiqi
+ *
+ */
 @RestController
 @Profile("spanish")
 @RibbonClient(name = "demo-tpd-en", configuration = EnglishClientConfig.class)
@@ -31,11 +36,14 @@ public class HaloController {
 	@Value("${server.port}")
 	private String port;
 	
+	//for load balanced rest template, add annotation again
 	@Autowired
-	private RestTemplate restTemplate;
+	@LoadBalanced
+	private RestTemplate loadBalanced;
 
 //	@Autowired
 //	private EurekaClient discoveryClient;
+
 
 	@Value("${tpd.appconfig.english-alias}")
 	private String english_alias;
@@ -60,7 +68,7 @@ public class HaloController {
 
 		// String url = instance.getHomePageUrl();
 		
-		String response = restTemplate.getForObject("http://demo-tpd-en/hello-server", String.class);
+		String response = loadBalanced.getForObject("http://demo-tpd-en/hello-server", String.class);
 
 		// return HaloServer() +" My English peer said "+ response + instance.getPort();
 		return "My port is " + port + " and im calling english on ";
