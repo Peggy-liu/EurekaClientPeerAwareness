@@ -16,6 +16,7 @@ management:
     health:
       enabled: true
 
+
 ---
 spring:
   profiles: english
@@ -38,7 +39,9 @@ demo-tpd-es:
   ribbon: 
     DeploymentContextBasedVipAddresses: ${tpd.appconfig.spanish-alias}
     NIWSServerListClassName: com.netflix.niws.loadbalancer.DiscoveryEnabledNIWSServerList
-    
+  
+
+
 ---
 spring:
   profiles: spanish
@@ -58,5 +61,5 @@ demo-tpd-en:
   ribbon: 
     DeploymentContextBasedVipAddresses: ${tpd.appconfig.english-alias}
     NIWSServerListClassName: com.netflix.niws.loadbalancer.DiscoveryEnabledNIWSServerList
-  
+   
       

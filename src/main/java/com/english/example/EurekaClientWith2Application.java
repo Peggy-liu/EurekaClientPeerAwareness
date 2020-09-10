@@ -1,7 +1,10 @@
 package com.english.example;
 
+import java.time.Duration;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +22,8 @@ public class EurekaClientWith2Application {
 	@Bean
 	@LoadBalanced
 	public RestTemplate restTemplate() {
-		return new RestTemplate();
+		return new RestTemplateBuilder().setConnectTimeout(Duration.ofMillis(5000))
+										.setReadTimeout(Duration.ofMillis(5000))
+										.build();
 	}
 }
